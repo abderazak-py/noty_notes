@@ -76,49 +76,57 @@ class NoteCard extends StatelessWidget {
                 ],
               ),
             ),
-            // 3-dots trailing button
-            PopupMenuButton<String>(
-              style: ButtonStyle(
-                iconColor: WidgetStateProperty.resolveWith<Color?>((
-                  Set<WidgetState> states,
-                ) {
-                  return fontColor;
-                }),
-              ),
-              onSelected: (String value) {
-                if (value == 'pin') {
-                  noteController.toggleStar(note);
-                } else if (value == 'edit') {
-                  Get.toNamed('/edit-note', arguments: note);
-                } else {
-                  Get.defaultDialog(
-                    title: 'remove'.tr,
-                    middleText: 'confirm_remove'.tr,
-                    textCancel: 'no'.tr,
-                    textConfirm: 'yes'.tr,
-                    onConfirm: () {
-                      noteController.removeNote(note);
-                      Get.back();
-                    },
-                    onCancel: () {
-                      Get.back();
-                    },
-                  );
-                }
+            GetBuilder<ThemeController>(
+              builder: (_) {
+                return PopupMenuButton<String>(
+                  tooltip: 'menu'.tr,
+                  style: ButtonStyle(
+                    iconColor: WidgetStateProperty.resolveWith<Color?>((
+                      Set<WidgetState> states,
+                    ) {
+                      return fontColor;
+                    }),
+                  ),
+                  onSelected: (String value) {
+                    if (value == 'pin') {
+                      noteController.toggleStar(note);
+                    } else if (value == 'edit') {
+                      Get.toNamed('/edit-note', arguments: note);
+                    } else {
+                      Get.defaultDialog(
+                        title: 'remove'.tr,
+                        middleText: 'confirm_remove'.tr,
+                        textCancel: 'no'.tr,
+                        textConfirm: 'yes'.tr,
+                        onConfirm: () {
+                          noteController.removeNote(note);
+                          Get.back();
+                        },
+                        onCancel: () {
+                          Get.back();
+                        },
+                      );
+                    }
+                  },
+                  itemBuilder: (BuildContext context) =>
+                      <PopupMenuEntry<String>>[
+                        PopupMenuItem<String>(
+                          value: 'pin',
+                          child: (note.isPinned.value)
+                              ? Text('unpin'.tr)
+                              : Text('pin'.tr),
+                        ),
+                        PopupMenuItem<String>(
+                          value: 'edit',
+                          child: Text('edit'.tr),
+                        ),
+                        PopupMenuItem<String>(
+                          value: 'delete',
+                          child: Text('delete'.tr),
+                        ),
+                      ],
+                );
               },
-              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                PopupMenuItem<String>(
-                  value: 'pin',
-                  child: (note.isPinned.value)
-                      ? Text('unpin'.tr)
-                      : Text('pin'.tr),
-                ),
-                PopupMenuItem<String>(value: 'edit', child: Text('edit'.tr)),
-                PopupMenuItem<String>(
-                  value: 'delete',
-                  child: Text('delete'.tr),
-                ),
-              ],
             ),
           ],
         ),

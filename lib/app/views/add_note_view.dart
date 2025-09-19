@@ -86,7 +86,7 @@ class AddNoteView extends StatelessWidget {
                         onPressed: () {
                           if (titleController.text.isEmpty ||
                               contentController.text.isEmpty) {
-                            Get.snackbar('erorr'.tr, 'empty_note'.tr);
+                            Get.snackbar('error'.tr, 'empty_note'.tr);
                             return;
                           }
                           noteController.addNote(

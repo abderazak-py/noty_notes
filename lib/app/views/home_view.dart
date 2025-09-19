@@ -16,15 +16,55 @@ class HomeView extends StatelessWidget {
         title: Text('app_name'.tr),
         centerTitle: true,
         actions: [
-          IconButton(
-            onPressed: () {
-              if (Get.locale == Locale('en', 'US')) {
-                Get.updateLocale(Locale('ar', 'AR'));
-              } else {
-                Get.updateLocale(Locale('en', 'US'));
-              }
+          GetBuilder<ThemeController>(
+            builder: (_) {
+              return PopupMenuButton<String>(
+                tooltip: 'language'.tr,
+                icon: Icon(Icons.language),
+                onSelected: (String value) {
+                  switch (value) {
+                    case 'ar':
+                      Get.updateLocale(Locale('ar', 'AR'));
+                      break;
+                    case 'zh':
+                      Get.updateLocale(Locale('zh', 'CN'));
+                      break;
+                    case 'en':
+                      Get.updateLocale(Locale('en', 'US'));
+                      break;
+                    case 'fr':
+                      Get.updateLocale(Locale('fr', 'FR'));
+                      break;
+                    case 'de':
+                      Get.updateLocale(Locale('de', 'DE'));
+                      break;
+                    case 'hi':
+                      Get.updateLocale(Locale('hi', 'IN'));
+                      break;
+                    case 'ja':
+                      Get.updateLocale(Locale('ja', 'JP'));
+                      break;
+                    case 'pt':
+                      Get.updateLocale(Locale('pt', 'PT'));
+                      break;
+                    case 'es':
+                      Get.updateLocale(Locale('es', 'ES'));
+                      break;
+                  }
+                },
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  PopupMenuItem<String>(value: 'ar', child: Text('arabic')),
+                  PopupMenuItem<String>(value: 'en', child: Text('english')),
+                  PopupMenuItem<String>(value: 'zh', child: Text('chinese')),
+                  PopupMenuItem<String>(value: 'fr', child: Text('french')),
+                  PopupMenuItem<String>(value: 'de', child: Text('german')),
+                  PopupMenuItem<String>(value: 'hi', child: Text('hindi')),
+                  PopupMenuItem<String>(value: 'ja', child: Text('japanese')),
+                  PopupMenuItem<String>(value: 'pt', child: Text('portuguese')),
+                  PopupMenuItem<String>(value: 'es', child: Text('spanish')),
+                ],
+              );
             },
-            icon: Icon(Icons.language),
           ),
 
           GetBuilder<ThemeController>(
@@ -41,6 +81,7 @@ class HomeView extends StatelessWidget {
           ),
         ],
       ),
+
       body: Expanded(
         child: Obx(() {
           return ListView.builder(
