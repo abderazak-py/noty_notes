@@ -7,7 +7,11 @@ import 'package:noty_notes/app/views/home_view.dart';
 
 class AppPages {
   static final routes = [
-    GetPage(name: AppRoutes.home, page: () => HomeView(), binding: NoteBinding()),
+    GetPage(
+      name: AppRoutes.home,
+      page: () => HomeView(),
+      binding: NoteBinding(),
+    ),
     GetPage(name: AppRoutes.addNoteView, page: () => AddNoteView()),
     GetPage(name: AppRoutes.editNoteView, page: () => EditNoteView()),
   ];
