@@ -33,6 +33,7 @@ class AddNoteView extends StatelessWidget {
                 child: CustomTextField(
                   controller: titleController,
                   hintText: 'title'.tr,
+                  maxLines: 1,
                 ),
               ),
               Padding(

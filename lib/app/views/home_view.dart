@@ -40,6 +40,7 @@ class HomeView extends StatelessWidget {
       body: Expanded(
         child: Obx(() {
           return ListView.builder(
+            physics: BouncingScrollPhysics(),
             itemCount: noteController.sortedNotes.length,
             itemBuilder: (context, index) {
               final note = noteController.sortedNotes[index];

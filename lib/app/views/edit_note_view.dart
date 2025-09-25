@@ -37,6 +37,7 @@ class EditNoteView extends StatelessWidget {
                 child: CustomTextField(
                   controller: titleController,
                   hintText: 'title'.tr,
+                  maxLines: 1,
                 ),
               ),
 
@@ -96,6 +97,7 @@ class EditNoteView extends StatelessWidget {
                                 content: contentController.text,
                                 date: DateTime.now(),
                                 color: currentColor.value,
+                                isPinned: oldNote.isPinned,
                               ),
                             );
 
