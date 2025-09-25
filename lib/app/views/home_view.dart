@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:noty_notes/app/controllers/language_controller.dart';
 import 'package:noty_notes/app/controllers/note_controller.dart';
 import 'package:noty_notes/app/controllers/theme_controller.dart';
+import 'package:noty_notes/app/models/note_model.dart';
 import 'package:noty_notes/app/views/widgets/language_menu.dart';
 import 'package:noty_notes/app/views/widgets/note_card.dart';
 
@@ -50,7 +51,13 @@ class HomeView extends StatelessWidget {
         }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.toNamed('/add-note'),
+        onPressed: () => Get.toNamed(
+          '/note-form', //add note
+          arguments: {
+            'oldNote': NoteModel(title: '', content: '', date: DateTime.now()),
+            'isAdding': true,
+          },
+        ),
         child: const Icon(Icons.add),
       ),
     );

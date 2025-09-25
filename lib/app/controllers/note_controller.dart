@@ -7,7 +7,7 @@ class NoteController extends GetxController {
 
   List<NoteModel> get notes => notesService.notes;
 
-  void addNote(NoteModel note, void back) {
+  void addNote(NoteModel note) {
     notesService.addNote(note);
     update();
   }

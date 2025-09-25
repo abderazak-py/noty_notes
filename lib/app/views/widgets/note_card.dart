@@ -36,7 +36,7 @@ class NoteCard extends StatelessWidget {
                     ),
                     softWrap: true,
                     maxLines: 2,
-                    overflow: TextOverflow.ellipsis, // shows ... if too long
+                    overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 8),
                   Text(
@@ -91,7 +91,10 @@ class NoteCard extends StatelessWidget {
                     if (value == 'pin') {
                       noteController.toggleStar(note);
                     } else if (value == 'edit') {
-                      Get.toNamed('/edit-note', arguments: note);
+                      Get.toNamed(
+                        '/note-form',
+                        arguments: {'oldNote': note, 'isAdding': false},
+                      );
                     } else {
                       Get.defaultDialog(
                         title: 'remove'.tr,

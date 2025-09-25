@@ -6,11 +6,14 @@ import 'package:noty_notes/app/controllers/theme_controller.dart';
 import 'package:noty_notes/app/models/note_model.dart';
 import 'package:noty_notes/app/views/widgets/custom_text_field.dart';
 
-class EditNoteView extends StatelessWidget {
-  const EditNoteView({super.key});
+class NoteFormView extends StatelessWidget {
+  const NoteFormView({super.key});
   @override
   Widget build(BuildContext context) {
-    final NoteModel oldNote = Get.arguments;
+    final Map<String, dynamic> args = Get.arguments;
+    final NoteModel oldNote = args['oldNote'] as NoteModel;
+    final bool isAdding = args['isAdding'] as bool;
+
     final NoteController noteController = Get.find<NoteController>();
     final ThemeController themeController = Get.find<ThemeController>();
     final TextEditingController titleController = TextEditingController(
@@ -90,17 +93,27 @@ class EditNoteView extends StatelessWidget {
                               return;
                             }
 
-                            noteController.editNote(
-                              oldNote,
-                              NoteModel(
-                                title: titleController.text,
-                                content: contentController.text,
-                                date: DateTime.now(),
-                                color: currentColor.value,
-                                isPinned: oldNote.isPinned,
-                              ),
-                            );
-
+                            if (isAdding) {
+                              noteController.addNote(
+                                NoteModel(
+                                  title: titleController.text,
+                                  content: contentController.text,
+                                  date: DateTime.now(),
+                                  color: currentColor.value,
+                                ),
+                              );
+                            } else {
+                              noteController.editNote(
+                                oldNote,
+                                NoteModel(
+                                  title: titleController.text,
+                                  content: contentController.text,
+                                  date: DateTime.now(),
+                                  color: currentColor.value,
+                                  isPinned: oldNote.isPinned,
+                                ),
+                              );
+                            }
                             Get.back();
                           },
                           child: Text(
