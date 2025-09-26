@@ -38,18 +38,16 @@ class HomeView extends StatelessWidget {
         ],
       ),
 
-      body: Expanded(
-        child: Obx(() {
-          return ListView.builder(
-            physics: BouncingScrollPhysics(),
-            itemCount: noteController.sortedNotes.length,
-            itemBuilder: (context, index) {
-              final note = noteController.sortedNotes[index];
-              return NoteCard(note: note);
-            },
-          );
-        }),
-      ),
+      body: Obx(() {
+        return ListView.builder(
+          physics: BouncingScrollPhysics(),
+          itemCount: noteController.sortedNotes.length,
+          itemBuilder: (context, index) {
+            final note = noteController.sortedNotes[index];
+            return NoteCard(note: note);
+          },
+        );
+      }),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.toNamed(
           '/note-form', //add note
