@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:get/get.dart';
 import 'package:noty_notes/app/controllers/note_controller.dart';
-import 'package:noty_notes/app/controllers/theme_controller.dart';
 import 'package:noty_notes/app/models/note_model.dart';
-import 'package:noty_notes/app/views/widgets/custom_text_field.dart';
+import 'package:noty_notes/app/views/widgets/note_form_body.dart';
 
 class NoteFormView extends StatelessWidget {
   const NoteFormView({super.key});
@@ -15,7 +13,6 @@ class NoteFormView extends StatelessWidget {
     final bool isAdding = args['isAdding'] as bool;
 
     final NoteController noteController = Get.find<NoteController>();
-    final ThemeController themeController = Get.find<ThemeController>();
     final TextEditingController titleController = TextEditingController(
       text: oldNote.title,
     );
@@ -23,173 +20,58 @@ class NoteFormView extends StatelessWidget {
       text: oldNote.content,
     );
     var currentColor = oldNote.color.obs;
-    var fontColor = themeController.fontColor(currentColor.value).obs;
 
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 20,
-                  right: 20,
-                  top: 20,
-                  bottom: 10,
-                ),
-                child: CustomTextField(
-                  controller: titleController,
-                  hintText: 'title'.tr,
-                  maxLines: 1,
-                ),
-              ),
+      appBar: AppBar(
+        title: Text(isAdding ? 'add_note'.tr : 'edit_note'.tr),
+        actions: [
+          IconButton(
+            onPressed: () {
+              if (titleController.text.isEmpty ||
+                  contentController.text.isEmpty) {
+                Get.snackbar('erorr'.tr, 'empty_note'.tr);
+                return;
+              }
 
-              Divider(color: Colors.grey.shade300, indent: 20, endIndent: 20),
-
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 20,
-                  right: 20,
-                  top: 10,
-                  bottom: 20,
-                ),
-                child: SizedBox(
-                  height: MediaQuery.sizeOf(context).height * 0.70,
-                  child: CustomTextField(
-                    controller: contentController,
-                    hintText: 'content'.tr,
-                    maxLines: 33,
+              if (isAdding) {
+                noteController.addNote(
+                  NoteModel(
+                    title: titleController.text,
+                    content: contentController.text,
+                    date: DateTime.now(),
+                    color: currentColor.value,
                   ),
-                ),
-              ),
-
-              Obx(
-                () => Row(
-                  children: [
-                    Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: SizedBox(
-                        width: MediaQuery.sizeOf(context).width * 0.45,
-                        height: MediaQuery.sizeOf(context).height * 0.05,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            shape: WidgetStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            padding: WidgetStateProperty.all(
-                              const EdgeInsets.symmetric(horizontal: 12),
-                            ),
-                            backgroundColor: WidgetStateProperty.all(
-                              currentColor.value,
-                            ),
-                          ),
-                          onPressed: () {
-                            if (titleController.text.isEmpty ||
-                                contentController.text.isEmpty) {
-                              Get.snackbar('erorr'.tr, 'empty_note'.tr);
-                              return;
-                            }
-
-                            if (isAdding) {
-                              noteController.addNote(
-                                NoteModel(
-                                  title: titleController.text,
-                                  content: contentController.text,
-                                  date: DateTime.now(),
-                                  color: currentColor.value,
-                                ),
-                              );
-                            } else {
-                              noteController.editNote(
-                                oldNote,
-                                NoteModel(
-                                  title: titleController.text,
-                                  content: contentController.text,
-                                  date: DateTime.now(),
-                                  color: currentColor.value,
-                                  isPinned: oldNote.isPinned,
-                                ),
-                              );
-                            }
-                            Get.back();
-                          },
-                          child: Text(
-                            'save'.tr,
-                            style: TextStyle(
-                              fontSize: 26,
-                              color: fontColor.value,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: SizedBox(
-                        width: MediaQuery.sizeOf(context).width * 0.45,
-                        height: MediaQuery.sizeOf(context).height * 0.05,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            shape: WidgetStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            padding: WidgetStateProperty.all(
-                              const EdgeInsets.symmetric(horizontal: 12),
-                            ),
-                            backgroundColor: WidgetStateProperty.all(
-                              currentColor.value,
-                            ),
-                          ),
-                          onPressed: () {
-                            //Color picker
-                            Get.dialog(
-                              AlertDialog(
-                                title: Text('pick_color'.tr),
-                                content: SingleChildScrollView(
-                                  child: ColorPicker(
-                                    pickerColor: currentColor.value,
-                                    onColorChanged: (color) {
-                                      currentColor.value = color;
-                                      fontColor = themeController
-                                          .fontColor(currentColor.value)
-                                          .obs;
-                                    },
-                                    pickerAreaHeightPercent: 0.8,
-                                  ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    child: Text('done'.tr),
-                                    onPressed: () => Get.back(),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                          child: Text(
-                            'color'.tr,
-                            style: TextStyle(
-                              fontSize: 26,
-                              color: fontColor.value,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Spacer(),
-                  ],
-                ),
-              ),
-            ],
+                );
+              } else {
+                noteController.editNote(
+                  oldNote,
+                  NoteModel(
+                    title: titleController.text,
+                    content: contentController.text,
+                    date: DateTime.now(),
+                    color: currentColor.value,
+                    isPinned: oldNote.isPinned,
+                  ),
+                );
+              }
+              Get.back();
+            },
+            icon: Icon(Icons.done),
           ),
+        ],
+
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: Icon(Icons.close),
         ),
+      ),
+
+      body: NoteFormBody(
+        titleController: titleController,
+        contentController: contentController,
+        currentColor: currentColor,
       ),
     );
   }
