@@ -61,7 +61,12 @@ class _ColorsListViewState extends State<ColorsListView> {
                     actions: [
                       TextButton(
                         child: Text('done'.tr),
-                        onPressed: () => Get.back(),
+                        onPressed: () {
+                          setState(() {
+                            selectedIndex = -1;
+                          });
+                          Get.back();
+                        },
                       ),
                     ],
                   ),
@@ -80,7 +85,7 @@ class _ColorsListViewState extends State<ColorsListView> {
               child: ColorBubble(
                 color: colors[index - 1],
                 isSelected:
-                    (selectedIndex == [index - 1] ||
+                    (selectedIndex == index - 1 ||
                     widget.currentColor.value == colors[index - 1]),
               ),
             );
