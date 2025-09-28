@@ -15,9 +15,11 @@ class ColorsListView extends StatefulWidget {
 
 class _ColorsListViewState extends State<ColorsListView> {
   late int selectedIndex;
+  late bool isPickerSelected;
   @override
   void initState() {
     super.initState();
+    isPickerSelected = false;
     selectedIndex = -1;
   }
 
@@ -64,6 +66,7 @@ class _ColorsListViewState extends State<ColorsListView> {
                         onPressed: () {
                           setState(() {
                             selectedIndex = -1;
+                            isPickerSelected = true;
                           });
                           Get.back();
                         },
@@ -72,7 +75,10 @@ class _ColorsListViewState extends State<ColorsListView> {
                   ),
                 );
               },
-              child: ColorPickerBubble(color: widget.currentColor),
+              child: ColorPickerBubble(
+                color: widget.currentColor,
+                isSelected: isPickerSelected,
+              ),
             );
           } else {
             return GestureDetector(
@@ -80,6 +86,7 @@ class _ColorsListViewState extends State<ColorsListView> {
                 setState(() {
                   selectedIndex = index - 1;
                   widget.currentColor.value = colors[index - 1];
+                  isPickerSelected = false;
                 });
               },
               child: ColorBubble(
