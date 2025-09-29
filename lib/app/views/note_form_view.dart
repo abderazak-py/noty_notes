@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:noty_notes/app/controllers/note_controller.dart';
 import 'package:noty_notes/app/models/note_model.dart';
+import 'package:noty_notes/app/views/widgets/custom_appbar.dart';
 import 'package:noty_notes/app/views/widgets/note_form_body.dart';
 
 class NoteFormView extends StatelessWidget {
@@ -22,50 +23,13 @@ class NoteFormView extends StatelessWidget {
     var currentColor = oldNote.color.obs;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(isAdding ? 'add_note'.tr : 'edit_note'.tr),
-        actions: [
-          IconButton(
-            onPressed: () {
-              if (titleController.text.isEmpty ||
-                  contentController.text.isEmpty) {
-                Get.snackbar('erorr'.tr, 'empty_note'.tr);
-                return;
-              }
-
-              if (isAdding) {
-                noteController.addNote(
-                  NoteModel(
-                    title: titleController.text,
-                    content: contentController.text,
-                    date: DateTime.now(),
-                    color: currentColor.value,
-                  ),
-                );
-              } else {
-                noteController.editNote(
-                  oldNote,
-                  NoteModel(
-                    title: titleController.text,
-                    content: contentController.text,
-                    date: DateTime.now(),
-                    color: currentColor.value,
-                    isPinned: oldNote.isPinned,
-                  ),
-                );
-              }
-              Get.back();
-            },
-            icon: Icon(Icons.done),
-          ),
-        ],
-
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: Icon(Icons.close),
-        ),
+      appBar: CustomAppbar(
+        isAdding: isAdding,
+        titleController: titleController,
+        contentController: contentController,
+        noteController: noteController,
+        currentColor: currentColor,
+        oldNote: oldNote,
       ),
 
       body: NoteFormBody(
