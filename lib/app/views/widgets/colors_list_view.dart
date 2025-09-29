@@ -26,23 +26,40 @@ class _ColorsListViewState extends State<ColorsListView> {
   @override
   Widget build(BuildContext context) {
     final List<Color> colors = [
-      Color(0xffF94144),
-      Color(0xffF3722C),
-      Color(0xffF8961E),
-      Color(0xffF9844A),
-      Color(0xffF9C74F),
-      Color(0xff90BE6D),
-      Color(0xff43AA8B),
-      Color(0xff4D908E),
-      Color(0xff577590),
-      Color(0xff277DA1),
+      Color.fromARGB(255, 109, 119, 173),
+      Color(0xFFFF5252),
+      Color(0xFFFF6D00),
+      Color(0xFFFFC107),
+      Color(0xFFFFEB3B),
+      Color(0xFF00C853),
+      Color(0xFF00BFA5),
+      Color(0xFF00E5FF),
+      Color(0xFF2979FF),
+      Color(0xFF651FFF),
+      Color(0xFFE040FB),
+      Color(0xFFFFCDD2),
+      Color(0xFFFFE0B2),
+      Color(0xFFFFF9C4),
+      Color(0xFFC8E6C9),
+      Color(0xFFB2DFDB),
+      Color(0xFFBBDEFB),
+      Color(0xFFD1C4E9),
+      Color(0xFFFFF0F5),
+      Color(0xFFE0E0E0),
+      Color(0xFFFFFFFF),
     ];
     return SizedBox(
-      height: 100,
-      child: ListView.builder(
+      height: 130,
+      child: GridView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemCount: colors.length + 1,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, // 🔥 exactly 2 rows
+          mainAxisSpacing: 4,
+          crossAxisSpacing: 4,
+          childAspectRatio: 1, // keep items square
+        ),
 
         itemBuilder: (context, index) {
           if (index == 0) {
